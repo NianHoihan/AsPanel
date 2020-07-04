@@ -1,0 +1,96 @@
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">SSL Certificate</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                    <br /><div class="col-md-12">
+                    <span style="font-size:16px;"><b>SSL Certificate Settings</b>&nbsp; &nbsp;{{if $ssl==1}}<div class="label label-success">Certificate status: Successful</div>{{else}}<div class="label label-danger">Certificate status: Failed</div>{{/if}}</span><hr />
+                    {{if $user.cdn}}<div class="row"><div class="col-sm-12">
+                    This is the current global SSL certificate setting, which is effective for all bound domain names. If you have already set up an SSL certificate for a single domain name, you do not need to set up a certificate here. Priority of SSL certificate: Domain>Global
+                </div></div>{{/if}}
+                    <br />
+                    <form action='?c=index&a=ssl' method='post'>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">ssl Certificate</label>
+                                <div class="col-sm-4">
+                                    <textarea name='certificate' cols=80 rows=8 class="form-control">{{$certificate}}</textarea>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">ssl Certificate Key</label>
+                                <div class="col-sm-4">
+                                    <textarea name='certificate_key' cols=80 rows=8 class="form-control">{{$certificate_key}}</textarea>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label"></label>
+                                <div class="col-sm-4">
+                                    <input type='submit' value='Submit' class="btn btn-primary">                               </div>
+                            </div>
+                        </fieldset>
+                        {{if $ssl==1||$ssl_rewrite==1}}
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label">HTTP to HTTPS</label>
+                                <div class="col-sm-4">
+                                    {{if $ssl_rewrite==0}}
+                                    <label class="switch">
+                                        <input type="checkbox" onclick="javascript:ssl_checkon(1)" title='Open' data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                        <span></span>                              </label>
+                                    {{else}}
+                                    <label class="switch">
+                                        <input type="checkbox" title='Close' onclick="javascript:ssl_checkon(2)" checked="checked" data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                        <span></span>                              </label>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </fieldset>
+                        {{/if}}
+                        {{if $ssl==1||$http2==1}}
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label">HTTP2</label>
+                                <div class="col-sm-4">
+                                    {{if $http2==0}}
+                                    <label class="switch">
+                                        <input type="checkbox" onclick="javascript:http2_checkon(1)" title='Open' data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                        <span></span>                              </label>
+                                    {{else}}
+                                    <label class="switch">
+                                        <input type="checkbox" title='Close' onclick="javascript:http2_checkon(0)" checked="checked" data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                        <span></span>                              </label>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </fieldset>
+                        {{/if}}
+                    </form>
+
+                </div>
+
+
+
+                </div></div></div></div></div>
+<script>
+    function ssl_checkon(val)
+    {
+        var data = 'status=' + val;
+        functoin_checkon('?c=index&a=sslRewrite',data);
+    }
+    function http2_checkon(val)
+    {
+        var data = 'status=' + val;
+        functoin_checkon('?c=index&a=http2',data);
+    }
+</script>

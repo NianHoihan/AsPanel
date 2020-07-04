@@ -1,0 +1,42 @@
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>AsPanel Login</title>
+    <link href="//cdn.bootcss.com/twitter-bootstrap/3.4.0/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body background="https://ww2.sinaimg.cn/large/a15b4afegy1fpp139ax3wj200o00g073.jpg">
+<div class="container" style="padding-top:80px;">
+    <div class="col-xs-12 col-sm-10 col-lg-5 center-block" style="float: none;">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3 class="panel-title"><center>AsPanel</center></h3></div>
+            <div class="panel-body">
+                <form action="index.php?c=session&a=login" method=post name="form1">
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Username" required="required"/>
+                    </div><br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                        <input type="password" name="passwd" class="form-control" placeholder="Password" required="required"/>
+                    </div><br/>
+                    {{if $img}}
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-adjust"></span></span>
+                        <input type="text" class="form-control input-lg" name="imgnumber" placeholder="输入验证码" autocomplete="off" required>
+                        <span class="input-group-addon" style="padding: 0">
+					<img src="?c=session&a=initImg&action=init">
+				</span>
+                    </div><br/>
+                    {{/if}}
+                    <div class="form-group">
+                        <div class="col-xs-12"><input type="submit" value="Login" class="btn btn-primary btn-block"/></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{dispatch c='index' a='foot'}}
+</body>
+</html>

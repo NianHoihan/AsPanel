@@ -1,0 +1,53 @@
+<script language="javascript">
+    function change_version()
+    {
+        var v = $("#v").val();
+        if(v=="")return;
+        $.post( "?c=index&a=phpset&op=change", {v:v},
+            function(data){ alert(data); window.location.reload();}
+        );
+        return false;
+    }
+</script>
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Switch PHP Version</h4>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                    <div style=" height:12px;"></div>
+                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Current Version</label>
+                                <div class="col-sm-4">
+                                    {{$version}}
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <form action="?c=index&a=phpset&op=change" method="POST" onsubmit="return change_version()">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label">Switch Version</label>
+                                    <div class="col-sm-4">
+                                        <select name="v" id="v" class="form-control">
+                                            {{foreach from=$versions item=row}}
+                                            <option value="{{$row}}" {{if $version==$row}}selected{{/if}}>{{$row}}</option>
+                                            {{/foreach}}
+                                        </select></div>
+                                    <div class="col-sm-4"><input value="确定" type="submit" class="btn btn-primary"></div>
+                                </div>
+                            </form>
+                        </fieldset>
+                        <br />   </div>
+
+                </div></div></div></div></div>
+

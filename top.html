@@ -1,0 +1,266 @@
+<script type='text/javascript'>
+    jQuery(document).ready(function() {
+        jQuery(".wid_left").mouseover(function() {
+            jQuery(this).addClass('onMouseOver');
+        });
+        jQuery(".wid_left").mouseout(function() {
+            jQuery(this).removeClass('onMouseOver');
+        });
+    });
+</script>
+<script type='text/javascript'>
+    var msg = '{{$msg}}';
+    function changePassword() {
+    }
+    function rebootProcess()
+    {
+        if (confirm("Are you sure you want to restart? This will interrupt the request to the website you are running now！")) {
+            $.get("?c=index&a=rebootProcess", function(data) {
+                alert(data);
+            });
+        }
+    }
+    jQuery(document).ready(function() {
+        jQuery(".item").mouseover(function() {
+            jQuery(this).addClass('onMouseOver');
+        });
+        jQuery(".item").mouseout(function() {
+            jQuery(this).removeClass('onMouseOver');
+        });
+        if (msg != '') {
+            var dlog = art.dialog({id:'id232',time:3,content:msg,title:'Prompt',icon: 'warning',top:'53%'});
+        }
+    });
+    var webmit = '{{$user.web_quota}}';//{{$quota.web_limit}}在linux下得不到
+    if (webmit == '') {
+        webmit = 0;
+    }
+    if (webmit > 0) {
+        var web_used = '{{$quota.web_used}}';
+        if (web_used == '') {
+            web_used = 0;
+        }
+        var web_use_len = (web_used / webmit) * 100;
+        //web_use_len = 30;
+        var dbmit = '{{$quota.db_limit}}';
+        var db_used = '{{$quota.db_used}}';
+        if (db_used == '') {
+            db_used = 0;
+        }
+        if (dbmit == "") {
+            dbmit = 0;
+        }
+        if (dbmit > 0) {
+            var db_use_len = (db_used / dbmit) * 100;
+        }
+        jQuery(document).ready(function() {
+            if (web_use_len != null && web_use_len != 'undefined') {
+                if (web_use_len < 1) {
+                    web_use_len = 1;
+                }
+                if (web_use_len > 100) {
+                    web_use_len = 100;
+                }
+                jQuery("#webdd").html("WEB Disk Storage：<div class='web_ww' title='Total size："
+                    + webmit
+                    + "M   Used："
+                    + web_use_len.toFixed(2)
+                    + "%'><div class='use_web' style='width:"
+                    + web_use_len.toFixed(2)
+                    + "%'></div></div>");
+            }
+            if (db_use_len != null && db_use_len != 'undefined') {
+                if (db_use_len < 1) {
+                    db_use_len = 1;
+                }
+                if (db_use_len > 100) {
+                    db_use_len = 100;
+                }
+                jQuery("#db").html("Database storage：<div class='web_ww' title='Total size："
+                    + dbmit
+                    + "M   Used："
+                    + db_use_len.toFixed(2)
+                    + "%'><div class='use_web' style='width:"
+                    + db_use_len.toFixed(2)
+                    + "%'  ></div></div>");
+            }
+        });
+    }
+</script>
+<!-- Navigation Bar-->
+<header id="topnav">
+    <div class="topbar-main">
+        <div class="container">
+
+            <!-- LOGO -->
+            <div class="topbar-left">
+                <a href="?c=index&a=main" class="logo">
+                    <i class="zmdi zmdi-cloud-outline-alt"></i>
+                    <span>AsPanel</span>
+                </a>
+            </div>
+            <!-- End Logo container-->
+
+
+            <div class="menu-extras">
+
+                <ul class="nav navbar-nav pull-right">
+
+                    <li class="nav-item">
+                        <!-- Mobile menu toggle-->
+                        <a class="navbar-toggle">
+                            <div class="lines">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </a>
+                        <!-- End mobile menu toggle-->
+                    </li>
+
+                    <li class="nav-item dropdown notification-list">
+                        <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="false" aria-expanded="false">
+                            <i class="zmdi zmdi-account noti-icon"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-arrow profile-dropdown " aria-labelledby="Preview">
+                            <!-- item-->
+                            <div class="dropdown-item noti-title">
+                                <h5 class="text-overflow"><small>Welcome：{{$vhost}}</small> </h5>
+                            </div>
+
+                            <!-- item-->
+                            <a href="?c=index&a=main" class="dropdown-item notify-item">
+                                <i class="zmdi zmdi-account-circle"></i> <span>Home</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="?c=session&a=changePasswordForm" class="dropdown-item notify-item">
+                                <i class="zmdi zmdi-settings"></i> <span>Change Password</span>
+                            </a>
+
+
+                            {{if $smarty.session.login_from=='vhost'}}
+                            <!-- item-->
+                            <a href="?c=session&a=logout" class="dropdown-item notify-item">
+                                <i class="zmdi zmdi-power"></i> <span>Logout</span>
+                            </a>
+                            {{/if}}
+
+                        </div>
+                    </li>
+
+                </ul>
+
+            </div> <!-- end menu-extras -->
+            <div class="clearfix"></div>
+
+        </div> <!-- end container -->
+    </div>
+    <!-- end topbar-main -->
+
+
+    <div class="navbar-custom">
+        <div class="container">
+            <div id="navigation">
+                <!-- Navigation Menu-->
+                <ul class="navigation-menu">
+                    <li>
+                        <a href="?c=index&a=main"><i class="zmdi zmdi-home"></i> <span> Home </span> </a>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#"><i class="zmdi zmdi-view-dashboard"></i> <span> Basic </span> </a>
+                        <ul class="submenu megamenu">
+                            <li>
+                                <ul>
+                                    <li><a href='?c=domain&a=show'>Domain</a></li>
+                                    <li><a href='?c=session&a=changePasswordForm'>Change Password</a></li>
+                                    <li><a href="?c=speed&a=speedFrom">Bandwidth Rate</a></li>
+                                    <li><a href='?c=cache&a=cacheFrom'>Cache Settings</a></li>
+                                    <li><a href="?c=cacheclean&a=cachecleanFrom">Clear Cache</a></li>
+                                    {{if $user.cdn==0}}
+                                    <li><a class="cwdy" href='?c=info&a=showErrorPage'>Custom Error Page</a></li>
+                                    {{/if}}
+                                </ul>
+                            </li>
+                            <li>
+                                <ul>
+                                    {{if $user.cdn==0}}
+                                    <li><a href='?c=response&a=gzipFrom'>GZIP Compression</a></li>
+                                    <li><a href='?c=mime&a=mimeFrom'>MIME Setting</a></li>
+                                    <li><a href='?c=indexfile&a=indexfileFrom'>Default Home Page File</a></li>
+                                    {{/if}}
+                                    <li><a href='?c=rewrite&a=rewriteFrom'>Domain Forward</a></li>
+                                    {{if $user.cdn==0}}
+                                    <li><a href='javascript:rebootProcess();'>Restart Host</a></li>
+                                    {{/if}}
+                                    {{if $user.cdn==1}}{{if $ssl}}
+                                    <li><a href='?c=index&a=sslForm'>SSL Certificate</a></li>
+                                    {{/if}}{{/if}}
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    {{if $user.cdn==0}}
+                    <li class="has-submenu">
+                        <a href="#"><i class="zmdi zmdi-folder"></i> <span> FTP/File Mangement </span> </a>
+                        <ul class="submenu">
+                            {{if $webftp_url}}
+                            <li><a href='{{$webftp_url}}'>Online File Manager</a></li>
+                            {{/if}}
+                            <li><a href='?c=shell&a=index'>Backup</a></li>
+                            {{if $user.ftp>0}}
+                            <li><a href='?c=index&a=ftpForm'>FTP Setting</a></li>
+                            {{/if}} {{if $ssl}}
+                            <li><a href='?c=index&a=sslForm'>SSL Certificate</a></li>
+                            {{/if}} {{if $user.ssi}}
+                            <li><a href='?c=ssi&a=show'>SSI Setting</a></li>
+                            {{/if}}
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href='http://{{$smarty.server.SERVER_NAME}}:3313/mysql/?pma_username={{$user.db_name}}' target='_blank'><i class="zmdi zmdi-collection-text"></i> <span> phpMyAdmin </span> </a>
+                    </li>
+                    {{/if}}
+
+                    <li class="has-submenu">
+                        <a href="#"><i class="zmdi zmdi-shield-security"></i><span> Security Settings </span> </a>
+                        <ul class="submenu">
+                            <li><a href='?c=banip&a=addTableFrom'>Blacklist</a></li>
+                            <li><a href='?c=protection&a=addProtectionTableFrom'>Anti-theft Chain</a></li>
+                            <li><a href='?c=antisql&a=antisqlFrom'>Anti SQL Injection</a></li>
+                            <li><a href='?c=antiupload&a=antiuploadFrom'>Anti Trojan Upload</a></li>
+                            <li><a href='?c=anticc&a=anticcFrom'>Anti-CC attack</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="has-submenu">
+                        <a href="#"><i class="zmdi zmdi-layers"></i> <span> Senior Management </span> </a>
+                        <ul class="submenu">
+                            <li><a href='?c=flow&a=viewFlow&t=day'>Flow chart</a></li>
+                            <li><a href='?c=connection&a=connectionFrom'>Connection Info</a></li>
+                            {{if $user.cdn==0}}
+                            <!--li><a href='/vhost/log.php/' target='_blank'>日志分析</a></li-->
+                            <li><a href='?c=capability&a=capabilityFrom'>Performance Analysis</a></li>
+                            {{/if}}
+                            <li><a href='?c=httpauth&a=index'>HTTP Certification</a></li>
+                            {{/if}}
+                        </ul>
+                    </li>
+
+                    {{if $smarty.session.login_from=='vhost'}}
+                    <li>
+                        <a href="?c=session&a=logout"><i class="zmdi zmdi-power"></i> <span> Logout </span> </a>
+                    </li>
+                    {{/if}}
+                </ul>
+                <!-- End navigation menu  -->
+            </div>
+        </div>
+    </div>
+</header>
+<!-- End Navigation Bar-->
+<div class="wrapper">
+    <div class="container">

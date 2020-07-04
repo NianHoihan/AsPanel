@@ -1,0 +1,345 @@
+﻿﻿<script type='text/javascript'>
+    var msg = '{{$msg}}';
+    function changePassword() {
+    }
+    function rebootProcess()
+    {
+        if (confirm("Are you sure you want to restart? This will interrupt the request to the website you are running now!")) {
+            $.get("?c=index&a=rebootProcess", function(data) {
+                alert(data);
+            });
+        }
+    }
+    jQuery(document).ready(function() {
+        jQuery(".item").mouseover(function() {
+            jQuery(this).addClass('onMouseOver');
+        });
+        jQuery(".item").mouseout(function() {
+            jQuery(this).removeClass('onMouseOver');
+        });
+        if (msg != '') {
+            var dlog = art.dialog({id:'id232',time:3,content:msg,title:'Prompt',icon: 'warning',top:'53%'});
+        }
+    });
+    var webmit = '{{$user.web_quota}}';//{{$quota.web_limit}}在linux下得不到
+    if (webmit == '') {
+        webmit = 0;
+    }
+    if (webmit > 0) {
+        var web_used = '{{$quota.web_used}}';
+        if (web_used == '') {
+            web_used = 0;
+        }
+        var web_use_len = (web_used / webmit) * 100;
+        //web_use_len = 30;
+        var dbmit = '{{$quota.db_limit}}';
+        var db_used = '{{$quota.db_used}}';
+        if (db_used == '') {
+            db_used = 0;
+        }
+        if (dbmit == "") {
+            dbmit = 0;
+        }
+        if (dbmit > 0) {
+            var db_use_len = (db_used / dbmit) * 100;
+        }
+        jQuery(document).ready(function() {
+            if (web_use_len != null && web_use_len != 'undefined') {
+                if (web_use_len < 1) {
+                    web_use_len = 1;
+                }
+                if (web_use_len > 100) {
+                    web_use_len = 100;
+                }
+                jQuery("#webdd").html("WEB Disk Storage：<div class='progress progress-striped' title='Total size："
+                    + webmit
+                    + "M   Used："
+                    + web_use_len.toFixed(2)
+                    + "%'><progress class='progress progress-striped progress-info' value='"
+                    + web_use_len.toFixed(2)
+                    + "' max='100'></progress></div>");
+            }
+            if (db_use_len != null && db_use_len != 'undefined') {
+                if (db_use_len < 1) {
+                    db_use_len = 1;
+                }
+                if (db_use_len > 100) {
+                    db_use_len = 100;
+                }
+                jQuery("#db").html("Database storage：<div class='progress progress-striped' title='Total size："
+                    + dbmit
+                    + "M   Used："
+                    + db_use_len.toFixed(2)
+                    + "%'><progress class='progress progress-striped progress-warning' value='"
+                    + db_use_len.toFixed(2)
+                    + "' max='100'></progress></div>");
+            }
+        });
+    }
+</script>
+
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">AsPanel-Home</h4>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+        <div class="card-box tilebox-two">
+            <a href="javascript:rebootProcess();" class="btn btn-sm btn-primary waves-effect waves-light pull-xs-right">重启主机</a>
+            <h6 class="text-muted text-uppercase m-b-15">Host Status</h6>
+            <h4 class="m-b-20">
+                {{if $user.status==3}}
+                <span style="color: #FF9900;">Database overrun</span>
+                {{elseif $user.status==2}}
+                <span style="color: #FF9900;">Flow exceeded</span>
+                {{elseif $user.status==1}}
+                <span style="color: #FF0000;">Inactive</span>
+                {{else}}
+                <span style="color:#009900;">Active</span>
+                {{/if}}
+            </h4>
+            <hr /><div style="height:10px;"></div>
+            {{if $user.cdn==0}}
+            <span id="webdd"></span>
+            {{if $quota.db_limit}}
+            <div style="height:5px;"></div>
+            <span id="db"></span>
+            {{/if}}
+            {{/if}}
+            <p>Bandwidth：{{if $user.flow_limit}}{{$user.flow_limit}}G{{else}}Unlimited{{/if}} &nbsp; ( Used：{{number_format($flow.flow/1024,2)}}M )</p>
+            <p>Addon Domains：{{if $user.domain==-1}}Unlimited{{else}}{{$user.domain}}个{{/if}}</p>
+            <p>Maximum Connections：{{if $user.max_connect==0}}Unlimited{{else}}{{$user.max_connect}}{{/if}}</p>
+            <p>Cache Hit Ratio：{{if $flow.flow>0}}{{number_format($flow.flow_cache*100/$flow.flow,2)}}%{{else}}0%{{/if}}</p>
+            <p>Bandwidth Rate：{{if $user.speed_limit==0}}Unlimited{{else}}{{$user.speed_limit/1024/1024*8}}Mbps{{/if}}</p>
+            {{if $user.cdn==0}}
+            <p>Language and Version：{{if $user.module}}{{$user.module}}{{else}}{{$user.templete}}:{{$user.subtemplete}}{{/if}}</p>
+            {{if count($subtempletes)>1 && $user.cs==1}}
+            <form name='frm' action='?c=index&a=changeSubtemplete' method='post'>
+                <p id="col_gray">PHP Version Switch：
+                    <select name='subtemplete' onChange='frm.submit()'>
+                        <option value=''>--Please select a version--</option>
+                        {{foreach from=$subtempletes item=subtemplete}}
+                        <option value='{{$subtemplete}}'{{if $subtemplete==$user.subtemplete}}selected{{/if}}>{{$subtemplete}}</option>
+                        {{/foreach}}
+                    </select>
+                </p>
+            </form>
+            {{/if}} {{/if}} {{if $module_link}}
+            <p>{{$module_link}}</p>
+            {{/if}}
+        </div>
+
+        {{if $user.cdn==0}}
+        <div class="card-box tilebox-tow">
+            {{if $webftp_url}}
+            <a href="{{$webftp_url}}" class="btn btn-sm btn-purple waves-effect waves-light pull-xs-right">Online File Mangement</a>
+            {{/if}}
+            <h6 class="text-muted text-uppercase m-b-20">FTP Account</h6><hr />
+            <p>FTP Address：{{$smarty.server.SERVER_NAME}}</p>
+            <p>FTP Port：21</p>
+            <p>FTP Username：{{$user.name}}</p>
+            <p>FTP Passwd：Same as the control panel login password</p>
+            {{if $quota.db_limit}}
+            <br />
+            <a href="http://{{$smarty.server.SERVER_NAME}}:3313/mysql/?pma_username={{$user.db_name}}" target='_blank' class="btn btn-sm btn-success waves-effect waves-light pull-xs-right">phpMyAdmin</a>
+            <h6 class="text-muted text-uppercase m-b-20">数据库信息</h6><hr />
+            {{if $user.db_type!='sqlsrv'}}
+            <p>Database Address：{{$node.db_host}}</p>
+            <p>Database Port：{{$node.db_port}}</p>
+            {{/if}}
+            <p>Database Name：{{$user.db_name}}</p>
+            <p>Database Username：{{$user.db_name}}</p>
+            <p>Database Password：The initial password is the same as the FTP password &nbsp;[ <a href="?c=session&amp;a=changePasswordForm">Change Password</a> ]</p>
+            {{/if}}
+        </div>
+        {{/if}}
+    </div>
+
+    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-9">
+        <div class="card-box">
+            <section class="icon-list-demo">
+
+                <div style="height:10px;"></div><h6 class="text-muted text-uppercase m-b-20">Basic</h6><hr /><div style="height:10px;"></div>
+                <div class="row">
+                    <a href="?c=domain&a=show">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-globe-alt"></i> <span style="color:#333333;">Domain</span>
+                        </div></a>
+
+                    <a href="?c=session&a=changePasswordForm">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                                <i class="zmdi zmdi-lock"></i> <span style="color:#333333;">Change Password</span>
+                        </div></a>
+
+                    {{if $user.cdn==0}}
+                    <a href="?c=index&a=phpset">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-code"></i> <span style="color:#333333;">PHP Version</span>
+                        </div></a>
+                    {{/if}}
+
+                    <a href="?c=speed&a=speedFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-hourglass-alt"></i> <span style="color:#333333;">Bandwidth Rate limit</span>
+                        </div></a>
+
+                    <a href="?c=cache&a=cacheFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-invert-colors"></i> <span style="color:#333333;">Cache Settings</span>
+                        </div></a>
+
+                    <a href="?c=cacheclean&a=cachecleanFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-invert-colors-off"></i> <span style="color:#333333;">Clear Cache</span>
+                        </div></a>
+
+                    {{if $user.cdn==0}}
+                    <a href="?c=info&a=showErrorPage">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-label-heart"></i> <span style="color:#333333;">Custom Error Page</span>
+                        </div></a>
+
+                    <a href="?c=response&a=gzipFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-dropbox"></i> <span style="color:#333333;">GZIP Compression</span>
+                        </div></a>
+
+                    <a href="?c=mime&a=mimeFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-codepen"></i> <span style="color:#333333;">MIME Setting</span>
+                        </div></a>
+
+                    <a href="?c=indexfile&a=indexfileFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-file"></i> <span style="color:#333333;">Default Home Page File</span>
+                        </div></a>
+                    {{/if}}
+
+                    <a href="?c=rewrite&a=rewriteFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-redo"></i> <span style="color:#333333;">Domain Forward</span>
+                        </div></a>
+
+                    {{if $user.cdn==0}}
+                    <a href="javascript:rebootProcess();">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-refresh-alt"></i> <span style="color:#333333;">Restart Host</span>
+                        </div></a>
+                    {{/if}}
+                    {{if $user.cdn==1}}
+                    {{if $ssl}}
+                    <a href="?c=index&a=sslForm">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-badge-check"></i> <span style="color:#333333;">SSL Certificate</span>
+                        </div></a>
+                    {{/if}}
+                    {{/if}}
+                </div>
+
+
+                {{if $user.cdn==0}}
+                {{if $dbadmin_url}}
+                <div style="height:50px;"></div><h6 class="text-muted text-uppercase m-b-20">Database Management</h6><hr /><div style="height:10px;"></div>
+                <div class="row">
+                    <a href="{{$dbadmin_url}}" target='_blank'>
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-12">
+                            <i class="zmdi zmdi-collection-text"></i> <span style="color:#333333;">phpMyAdmin</span>
+                        </div></a>
+                </div>
+                {{/if}}{{/if}}
+
+                {{if $user.cdn==0}}
+                <div style="height:50px;"></div><h6 class="text-muted text-uppercase m-b-20">FTP/File Mangement</h6><hr /><div style="height:10px;"></div>
+                <div class="row">
+                    {{if $webftp_url}}
+                    <a href="{{$webftp_url}}">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-folder-star"></i> <span style="color:#333333;">Online File Manager</span>
+                        </div></a>
+                    {{/if}}
+                    <a href="?c=shell&a=index">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-cloud-done"></i> <span style="color:#333333;">Backup</span>
+                        </div></a>
+                    {{if $user.ftp>0}}
+                    <a href="?c=index&a=ftpForm">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-upload"></i> <span style="color:#333333;">FTP Setting</span>
+                        </div></a>
+                    {{/if}} {{if $ssl}}
+                    <a href="?c=index&a=sslForm">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-badge-check"></i> <span style="color:#333333;">SSL Certificate</span>
+                        </div></a>
+                    {{/if}} {{if $user.ssi}}
+                    <a href="?c=ssi&a=show">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-wrench"></i> <span style="color:#333333;">SSI Setting</span>
+                        </div></a>
+                    {{/if}}
+                </div>
+                {{/if}}
+
+                <div style="height:50px;"></div><h6 class="text-muted text-uppercase m-b-20">Security Settings</h6><hr /><div style="height:10px;"></div>
+                <div class="row">
+                    <a href="?c=banip&a=addTableFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-block-alt"></i> <span style="color:#333333;">Blacklist</span>
+                        </div></a>
+                    <a href="?c=protection&a=addProtectionTableFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-flash-off"></i> <span style="color:#333333;">Anti-theft Chain</span>
+                        </div></a>
+                    <a href="?c=antisql&a=antisqlFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-format-color-fill"></i> <span style="color:#333333;">Anti SQL Injection</span>
+                        </div></a>
+                    <a href="?c=antiupload&a=antiuploadFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-layers-off"></i> <span style="color:#333333;">Anti Trojan Upload</span>
+                        </div></a>
+                    <a href="?c=anticc&a=anticcFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-shield-security"></i> <span style="color:#333333;">Anti-CC attack</span>
+                        </div></a>
+                </div>
+
+                <div style="height:50px;"></div><h6 class="text-muted text-uppercase m-b-20">Senior Management</h6><hr /><div style="height:10px;"></div>
+                <div class="row">
+                    <a href="?c=flow&a=viewFlow&t=day">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-collection-bookmark"></i> <span style="color:#333333;">Flow chart</span>
+                        </div></a>
+                    <a href="?c=connection&a=connectionFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-link"></i> <span style="color:#333333;">Connection Info</span>
+                        </div></a>
+                    {{if $user.cdn==0}}
+                    <!--a href='/vhost/log.php/' target='_blank'>
+                    <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                        <i class="zmdi zmdi-device-hub"></i> <span style="color:#333333;">日志分析</span>
+                    </div></a-->
+                    <a href="?c=capability&a=capabilityFrom">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-receipt"></i> <span style="color:#333333;">Performance Analysis</span>
+                        </div></a>
+                    {{/if}}
+                    <a href="?c=httpauth&a=index">
+                        <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xs-6">
+                            <i class="zmdi zmdi-globe-lock"></i> <span style="color:#333333;">HTTP Certification</span>
+                        </div></a>
+                    {{/if}}
+                </div>
+
+
+            </section>
+        </div>
+    </div>
+
+</div>
+<div style="height:50px;"></div>
