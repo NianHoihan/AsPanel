@@ -1,0 +1,96 @@
+<script language='javascript'>
+    function cache_clean() {
+        var url = $("#url").val();
+        if (url == "") {
+            return alert('Value Cannot Be Empty');
+        }
+        var url_arr = url.split("\n");
+        var clean_url = "";
+        for (i = 0; i < url_arr.length; i++) {
+            if (url_arr[i].substr(0, 7) != 'http://' && url_arr[i].substr(0, 8) != 'https://') {
+                return alert("Input error, please check http://");
+            }
+            if (url_arr[i].substr(-1) == '*') {
+                url_arr[i] = '3' + url_arr[i].substr(0, url_arr[i].length - 1);
+            }
+            clean_url += url_arr[i] + ', ';
+        }
+        $.ajax({
+            type : "POST",
+            url : '?c=cacheclean&a=cacheclean',
+            data : "url=" + clean_url,
+            success : function(msg) {
+                alert(msg);
+            }
+        });
+    }
+    function domain_cache_clean() {
+        var domain = $("#domain").val();
+        if (domain == "") {
+            return alert('Please Select a Domain Name First');
+        }
+        var clean_url = "3http://"+domain+"/, 3https://"+domain+"/, ";
+        $.ajax({
+            type : "POST",
+            url : '?c=cacheclean&a=cacheclean',
+            data : "url=" + clean_url,
+            success : function(msg) {
+                alert(msg);
+            }
+        });
+    }
+</script>
+<div class='pro_msg' style="display: none" id='msg'></div>
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Clear Cache</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                    <div style=" height:7px;"></div>
+                    <div class="col-md-12">
+                        <form method='post' class="form-horizontal">
+                            <legend>Clear the entire domain name cache</legend>
+                            <fieldset>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label">Choose Domain</label>
+                                    <div class="col-sm-4"><select name="domain" id="domain" class="form-control">
+                                        {{foreach from=$list item=row}}<option value="{{$row}}">{{$row}}</option>{{/foreach}}
+                                    </select></div>
+                                    <div class="col-sm-4"><input type='button' value='Submit' onclick='domain_cache_clean();' class="btn btn-primary" /></div>
+                                </div>
+                            </fieldset>
+                            <br/><br/>
+                            <legend>Clear a single URL URL cache</legend>
+                            <fieldset>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label">Enter URL</label>
+                                    <div class="col-sm-4"><textarea name="url" id='url' class="form-control" rows='6' ></textarea></div>
+                                    <div class="col-sm-4">One url per line, for example:<u>http://www.asakumo.com/</u> 或 <u>http://www.asakumo.com/web/</u> Support Wildcards*</div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label"></label>
+                                    <div class="col-sm-4">
+                                        <input type='button' onclick='cache_clean();' value='Submit' class="btn btn-primary" />             </div>
+                                </div>
+                            </fieldset>
+                            <br/><br/>
+                            <fieldset>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <font color="red">* After clearing the node cache, you may also need to clear the browser cache or press Ctrl+F5 to refresh the page to see the latest page</font>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+
+                </div></div></div></div></div>
+
