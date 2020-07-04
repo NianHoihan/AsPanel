@@ -1,0 +1,168 @@
+<script language='javascript' src='{{$STATIC}}js/banip.js?v=2'></script>
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">IP blacklist</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                    <div style=" height:7px;"></div>
+                    <table class="table" cellpadding="0" cellspacing="0">
+                        <thead class="thead-default">
+                        <tr>
+                            <th>Operating&nbsp;[<a href="javascript:banip_del_all()">Empty</a>]</th>
+                            <th>Ban IP</th>
+                            <th>Prohibited Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{foreach from=$ips item=row}}
+                        <tr>
+                            <td ><a href="javascript:banip_del({{$row.id}})">Delete</a></td>
+                            <td>{{$row.ip}}</td>
+                            <td>{{if $row.expire==0}}永久{{else}}{{ceil(($row.expire-time())/60)}}{{/if}}</td>
+                        </tr>
+                        {{/foreach}}
+                        </tbody>
+                    </table>
+
+
+
+                    <br /><br /><div class="col-md-12">
+                    <span style="font-size:16px;"><b>Function Parameter Setting</b></span><hr /><br />
+                    <form action='?c=banip&a=addBanip' method='post'>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Function Switch</label>
+                                <div class="col-sm-4">
+                                    {{if $banip==0}}
+                                    <label class="switch">
+                                        <input type="checkbox" onclick="javascript:banip_checkon(1)" title='Open Function' data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                        <span></span>                              </label>
+                                    {{else}}
+                                    <label class="switch">
+                                        <input type="checkbox" onclick="javascript:banip_checkon(2)" title='Close Function' checked="checked" data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                        <span></span>                              </label>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Prohibit IP/IP Segment</label>
+                                <div class="col-sm-4">
+                                    <input name='ip' id='ip' size="15" class="form-control" placeholder=""/>             </div>
+                                <div class="col-sm-4">
+                                    * Prohibit a Single IP：192.168.0.1&nbsp;&nbsp;&nbsp;Prohibit IP Segment：192.168.0.1/24                                 </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label"></label>
+                                <div class="col-sm-4">
+                                    <input type='button' onclick='banip_add();' value='增加' class="btn btn-primary" />             </div>
+                            </div>
+                        </fieldset>
+                </div>
+                    </form>
+
+                </div>
+
+            </div></div>
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="page-title">URL Blacklist</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="card-box">
+
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                            <div style=" height:7px;"></div>
+                            <table class="table" cellpadding="0" cellspacing="0">
+                                <thead class="thead-default">
+                                <tr>
+                                    <th>Operating&nbsp;[<a href="javascript:banurl_del_all()">Empty</a>]</th>
+                                    <th>Request Method</th>
+                                    <th>Forbid URL</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{foreach from=$urls item=row}}
+                                <tr>
+                                    <td ><a href="javascript:banurl_del({{$row.id}})">Delete</a></td>
+                                    <td>{{$row.meth}}</td>
+                                    <td>{{$row.url}}</td>
+                                </tr>
+                                {{/foreach}}
+                                </tbody>
+                            </table>
+
+
+
+                            <br /><br /><div class="col-md-12">
+                            <span style="font-size:16px;"><b>功能参数设置</b></span><hr /><br />
+                            <form action='?c=banip&a=addBanip' method='post'>
+                                <fieldset>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 form-control-label">Function Switch</label>
+                                        <div class="col-sm-4">
+                                            {{if $banurl==0}}
+                                            <label class="switch">
+                                                <input type="checkbox" onclick="javascript:banurl_checkon(1)" title='Open Function' data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                                <span></span>                              </label>
+                                            {{else}}
+                                            <label class="switch">
+                                                <input type="checkbox" onclick="javascript:banurl_checkon(2)" title='Close Function' checked="checked" data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                                <span></span>                              </label>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 form-control-label">URL</label>
+                                        <div class="col-sm-4">
+                                            <input name='url' id='url' class="form-control" placeholder=""/></div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 form-control-label">Method</label>
+                                        <div class="col-sm-4">
+                                            <select name='meth' id='meth' class="form-control">
+                                                <option value="">All</option>
+                                                <option value="GET">GET</option>
+                                                <option value="POST">POST</option>
+                                                <option value="PUT">PUT</option>
+                                                <option value="DELETE">DELETE</option>
+                                                <option value="!GET">!GET</option>
+                                                <option value="!POST">!POST</option>
+                                                <option value="!PUT">!PUT</option>
+                                                <option value="!DELETE">!DELETE</option>
+                                            </select></div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 form-control-label"></label>
+                                        <div class="col-sm-4">
+                                            <input type='button' onclick='banurl_add();' value='Increase' class="btn btn-primary" />             </div>
+                                    </div>
+                                </fieldset>
+                        </div>
+                            </form>
+
+                        </div>
+
+
+
+                    </div></div></div></div></div>
