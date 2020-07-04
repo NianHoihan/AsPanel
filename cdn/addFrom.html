@@ -1,0 +1,33 @@
+{{include file='common/head.html'}}
+<div align="center">
+    {{foreach from=$ips item=row}}
+    <div class="block tb_wid4 mar">
+        <table id="table_2" cellpadding="0" cellspacing="1">
+            <tr>
+                <td class="td_bgc right_2"><a href="?c=banip&a=delBanip&id={{$row.id}}">Delete</a></td>
+                <td class="td_bgc right_2">{{$row.ip}}</td>
+                <td class="td_bgc right_2">{{if $row.expire==0}}Permanent{{else}}{{ceil(($row.expire-time())/60)}}{{/if}}</td>
+            </tr>
+        </table>
+    </div>
+    {{/foreach}}
+    <div class="head_block tb_wid4">&nbsp;Prohibit IP Access&nbsp;&nbsp;&nbsp;
+        {{if $at==0}}
+        <a href="?c=banip&a=switchIp&status=1"><font color='red'>Open the IP Prohibition Function</font></a>
+        {{else}}
+        <a href="?c=banip&a=switchIp&status=2"><font color='red'>Disable IP Prohibition Function</font></a>
+        {{/if}}
+    </div>
+    <div class="block tb_wid4">
+        <table id="table_2" cellpadding="0" cellspacing="1">
+            <form action='?c=banip&a=addBanip' method='post'>
+                <tr>
+                    <td class="td_bgc right_2 td_hg">IP Address (eg: 192.168.0.1, 192.168.0.1/24):
+                        <input name='ip' id='ip' value=''></td>
+                    <td class="td_bgc right_2">Prohibited Time (0 means permanent):	<input name='life_time' value='0' size=5>&nbsp;Minute</td>
+                    <td class="td_bgc right_2"><input type='submit' value='No Access'></td>
+                </tr>
+            </form>
+        </table>
+    </div>
+</div>
