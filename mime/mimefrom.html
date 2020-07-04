@@ -1,0 +1,81 @@
+<script language='javascript' src='{{$STATIC}}js/mime.js'></script>
+
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">MIME Settings</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                    <div style=" height:7px;"></div>
+                    <table class="table" cellpadding="0" cellspacing="0">
+                        <thead class="thead-default">
+                        <tr>
+                            <th>Operating</th>
+                            <th>File Extension</th>
+                            <th>MIME Type</th>
+                            <th>Cache Time</th>
+                            <th>Whether to compress</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{foreach from=$mime item=row}}
+                        <tr>
+                            <td><a href="javascript:del_mime('{{$row.file_ext}}')">Delete</a></td>
+                            <td>{{$row.file_ext}}</td>
+                            <td>{{$row.mime_type}}</td>
+                            <td>{{$row.cache_time}} Seconds</td>
+                            <td>{{if $row.gzip==1}}yes{{else}}no{{/if}}</td>
+                        </tr>
+                        {{/foreach}}
+                        </tbody>
+                    </table>
+                    <br /><br /><div class="col-md-12">
+                    <span style="font-size:16px;"><b>Function parameter setting</b></span><hr /><div style="height:6px;"></div>
+                    <form action='?c=mime&a=mimeAdd' method='post'>
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label">File extension</label>
+                            <div class="col-sm-4">
+                                <input name='file_ext' size='8' class="form-control" placeholder="" id='file_ext' />
+                            </div>
+                            <div class="col-sm-4">
+                                * 例：php                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label">MIME type</label>
+                            <div class="col-sm-4">
+                                <input name='mime_type' class="form-control" id='mime_type' />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label">Cache time</label>
+                            <div class="col-sm-4">
+                                <input name='cache_time' class="form-control" value='3600' size='5' id='cache_time' />
+                            </div>
+                            <div class="col-sm-4">
+                                * Example: 3600, unit time: seconds                                 </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label"></label>
+                            <div class="col-sm-4">
+                                <div class="checkbox checkbox-primary">
+                                    <input type='checkbox' name='gzip' value='1' id='gzip' />
+                                    <label for="gzip">Turn on compression</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label"></label>
+                            <div class="col-sm-4">
+                                <input type='button' value='Increase' onclick='mime_add();' class="btn btn-primary" />
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+                </div></div></div></div></div>
