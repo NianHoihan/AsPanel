@@ -1,0 +1,104 @@
+<script language='javascript' src='{{$STATIC}}js/anticc.js?v=2'></script>
+
+<div class='pro_msg' style="display: none" id='msg'></div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Anti-CC Attack</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                    <div style=" height:7px;"></div>
+                    <div class="col-md-12">
+                        <form action='?c=anticc&a=anticcAdd' method='post' class="form-horizontal">
+                            <legend>Function Parameter Setting</legend>
+                            <fieldset>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label">Function Switch</label>
+                                    <div class="col-sm-4">
+                                        {{if $at==0}}
+                                        <label class="switch">
+                                            <input type="checkbox" onclick="javascript:anticc_checkon(1)" title='Able Function' data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                            <span></span>                              </label>
+                                        {{else}}
+                                        <label class="switch">
+                                            <input type="checkbox" title='Disable Function' onclick="javascript:anticc_checkon(2)" checked="checked" data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                            <span></span>                              </label>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label">Trigger Frequency</label>
+                                    <div class="col-sm-4">
+                                        <select name='frequency' id='frequency' data-request='{{$cc.request}}' data-second='{{$cc.second}}' class="form-control">
+                                            <option value="">--Frequency Not Set--</option>
+                                            <option value="0,0">Request verification for the first time</option>
+                                            <option value="20,10">20 requests in 10 seconds</option>
+                                            <option value="50,10">50 requests in 10 seconds</option>
+                                            <option value="100,10">100 requests in 10 seconds</option>
+                                            <option value="diy">Customize</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset id='request_form' style='display: none;'>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label">Requests</label>
+                                    <div class="col-sm-4">
+                                        <input name='request' size='5' value='{{$cc.request}}' id='request' class="form-control" />
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset id='second_form' style='display: none;'>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label">Unit of time</label>
+                                    <div class="col-sm-4">
+                                        <input name='second' size='5' value='{{$cc.second}}' id='second' class="form-control" />
+                                    </div>
+                                    <div class="col-sm-4">Seconds</div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label">Protection Mode</label>
+                                    <div class="col-sm-4">
+                                        <select name='mode' id='mode' data-mode='{{$cc.mode}}' class="form-control">
+                                            <option value="http_redirect">Normal mode</option>
+                                            <option value="js_concat">Enhanced mode</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label">Whitelist IP</label>
+                                    <div class="col-sm-4">
+                                        <textarea name='whiteip' id='whiteip' cols='80' rows='4' class="form-control" placeholder="If No, please leave blank">{{$whiteip}}</textarea>
+                                    </div>
+                                    <div class="col-sm-4">Anti-CC white list, IP format: one line per line Support IP segment: 127.0.0.0/24 or 127.0.0.1-127.0.0.255 seconds</div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label"></label>
+                                    <div class="col-sm-4">
+                                        <input type='button' value='Save Settings' onclick='anticc_add()' class="btn btn-primary" />&nbsp;&nbsp;
+                                        {{if $cc!=null}}<input type='button' value='Delete settings' onclick='anticc_del()' class="btn btn-default" />{{/if}}
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+
+
+                    </div>
+
+
+
+                </div></div></div></div></div><br>
