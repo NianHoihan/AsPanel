@@ -1,0 +1,113 @@
+<script language='javascript' src='{{$STATIC}}js/cache.js'></script>
+<div class='pro_msg' style="display: none" id='msg'></div>
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Cache Settings</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                    <div style=" height:7px;"></div>
+                    <table class="table" cellpadding="0" cellspacing="0">
+                        <thead class="thead-default">
+                        <tr>
+                            <th>Operating</th>
+                            <th>Sequence</th>
+                            <th>Setting Name</th>
+                            <th>Cache Time</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{foreach from=$header item=row}}
+                        <tr>
+                            <td><a href="javascript:cache_del({{$row.id}})">Delete</a></td>
+                            <td>{{$row.id}}</td>
+                            <td>{{$row.name}}</td>
+                            <td>{{$row.max_age}} Seconds {{if $row.static}}Force Caching{{/if}}</td>
+                            <td>{{$row.val}}</td>
+                        </tr>
+                        {{/foreach}}
+                        </tbody>
+                    </table>
+
+                    <br /><br /><div class="col-md-12">
+                    <span style="font-size:16px;"><b>Function Parameter Setting</b></span><hr /><div style="height:6px;"></div>
+                    <form action='?c=cache&a=cacheAdd' method='post'>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Function Switch</label>
+                                <div class="col-sm-4">
+                                    {{if $at==0}}
+                                    <label class="switch">
+                                        <input type="checkbox" onclick="javascript:chche_checkon(1)" title='Open Function' data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                        <span></span>                              </label>
+                                    {{else}}
+                                    <label class="switch">
+                                        <input type="checkbox" title='Disable Function' onclick="javascript:chche_checkon(2)" checked="checked" data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                        <span></span>                              </label>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Types of</label>
+                                <div class="col-sm-4">
+                                    <select name='mode' id='mode' onchange='pro_msg(this.value);' class="form-control">
+                                        <option value="file_ext">File Extension</option>
+                                        <option value="content-type">content-Type</option>
+                                        <option value="url">URL</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    * Please Choose The Type                                 </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Value</label>
+                                <div class="col-sm-4">
+                                    <input name="cache_value" id='cache_value' class="form-control"/>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Cache Time</label>
+                                <div class="col-sm-4">
+                                    <input name='max_age' placeholder="" id='max_age' class="form-control" />
+                                </div>
+                                <div class="col-sm-4">
+                                    * Example: 120, unit time: seconds                                 </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label"></label>
+                                <div class="col-sm-4">
+                                    <div class="checkbox checkbox-primary">
+                                        <input type="checkbox" name='static' value='1' id='static'>
+                                        <label for="static"> Force Caching</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label"></label>
+                                <div class="col-sm-4">
+                                    <input type='button' value='Submit settings' onclick='cache_add();' class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+
+                </div></div></div></div></div>
+<div id='script'></div><br />
