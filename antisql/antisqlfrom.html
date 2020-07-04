@@ -1,0 +1,93 @@
+<script language='javascript' src='{{$STATIC}}js/antisql.js'></script>
+<div class='piao_msg' align='center' style="display: none" id='msg'></div>
+<div class='piao_msg' style="display: none" id='msg'></div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Anti-SQL Injection</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                    <div style=" height:7px;"></div>
+                    <table class="table"cellpadding="0" cellspacing="0">
+                        <thead class="thead-default">
+                        <tr>
+                            <th>Operating</th>
+                            <th>Filter Parameter Values</th>
+                            <th>Coding</th>
+                            <th>Filter Method</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{foreach from=$sql item=row}}
+                        <tr>
+                            <td><a href="javascript:antisql_del({{$row.id}})">Delete</a></td>
+                            <td>{{$row.value}}</td>
+                            <td>{{$row.charset}}</td>
+                            <td>{{if $row.get==1}}get&nbsp;{{/if}}{{if $row.post==1}}post{{/if}}</td>
+                        </tr>
+                        {{/foreach}}
+                        </tbody>
+                    </table>
+
+                    <br /><br /><div class="col-md-12">
+                    <span style="font-size:16px;"><b>Function Parameter Setting</b></span><hr /><br />
+
+                    <form action='?c=antisql&a=antisqlAdd' method='post' name='form'>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Function Switch</label>
+                                <div class="col-sm-4">
+                                    {{if $at==0}}
+                                    <label class="switch">
+                                        <input type="checkbox" onclick="javascript:antisql_checkon(1)" title='Open Function' data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                        <span></span>                              </label>
+                                    {{else}}
+                                    <label class="switch">
+                                        <input type="checkbox" title='Disable Function' onclick="javascript:antisql_checkon(2)" checked="checked" data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                        <span></span>                              </label>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Prohibit Parameter Value(regular)</label>
+                                <div class="col-sm-4">
+                                    <input name='param_value' size='62' class="form-control" id='param'>
+                                </div>
+                                <div class="col-sm-4">
+                                    <a href='javascript:piao_msg();'><font color='red'>Help? Example</font></a>                                 </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Coding</label>
+                                <div class="col-sm-4">
+                                    <input name='charset' size='6' value='utf-8' class="form-control" id='charset' />
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label"></label>
+                                <div class="col-sm-4">
+                                    <input type='button' onclick='antisql_add();' value='提交' class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+
+                </div>
+
+
+
+                </div></div></div></div></div><br>
+<script language='javascript'>
+    form.param_value.focus();
+</script>
