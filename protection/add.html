@@ -1,0 +1,91 @@
+<script language='javascript' src='{{$STATIC}}js/protection.js'></script>
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Anti-Theft Chain Settings</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                    <div style=" height:7px;"></div>
+                    <table class="table">
+                        <thead class="thead-default">
+                        <tr>
+                            <th>Operating</th>
+                            <th>Directory Rules</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{foreach from=$paths item=row}}
+                        <tr>
+                            <td>[<a href='javascript:protection_del({{$row.id}})'>Delete</a>]</td>
+                            <td>{{$row.path}}</td>
+                        </tr>
+                        {{/foreach}}
+                        </tbody>
+                    </table>
+
+                    <br /><br /><div class="col-md-12">
+                    <span style="font-size:16px;"><b>Function Parameter Setting</b></span><hr /><br />
+                    <form action='?c=protection&a=addPath' method='post'>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Function Switch</label>
+                                <div class="col-sm-4">
+                                    {{if $name}}
+                                    <label class="switch">
+                                        <input type="checkbox" onclick="javascript:protection_checkon(0)" title='Disable function'  checked="checked" data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                        <span></span>                              </label>
+                                    {{else}}
+                                    <label class="switch">
+                                        <input type="checkbox" onclick="javascript:protection_checkon(1)" title='Open function' data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                        <span></span>                              </label>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Protection path, regular matching</label>
+                                <div class="col-sm-4">
+                                    <input name='path' id='path' size='40' class="form-control" />             </div>
+                                <div class="col-sm-4">* Example:^/download </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Legal source url</label>
+                                <div class="col-sm-4">
+                                    <input name='referer' id='referer' size='40' placeholder="" class="form-control" />
+                                </div>
+                                <div class="col-sm-4">* Regular, not writing means the same host </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Illegal request redirect</label>
+                                <div class="col-sm-4">
+                                    <input name='redirect' id='redirect' size='40' placeholder="" class="form-control" />
+                                </div>
+                                <div class="col-sm-4">* If it is not written, it will be rejected by default </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label"></label>
+                                <div class="col-sm-1">
+                                    <input type='button' onclick='protection_add()' value='Submit settings' class="btn btn-primary" />             </div>
+                                <div class="col-sm-1">
+                                    <a href='javascript:protection_empty()'; class="btn btn-default">Clear settings</a>              </div>
+                            </div>
+                        </fieldset>
+                    </form>
+
+                </div>
+
+
+
+                </div></div></div></div></div><br>
