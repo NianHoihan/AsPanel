@@ -1,0 +1,64 @@
+<script type="text/javascript">
+    //var s = "此功能将服务器数据压缩后发送给浏览者，这将有助于提高您的网页打开速度.";
+    //	alert(s);
+    function submit() {
+        var gzip = $("#gzip").val();
+        $.get("?c=response&a=addGzip&gzip=" + gzip, function(data) {
+            alert(data);
+        });
+    }
+    function del() {
+        var r = confirm("Confirm to delete this setting？");
+        if (r == false)
+            return;
+        $.get("?c=response&a=delGzip", function(data) {
+            alert(data);
+        });
+    }
+</script>
+
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">GZIP Compression</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                    <div style=" height:7px;"></div>
+
+                    <div class="col-md-12">
+                        <span style="font-size:16px;"><b>Function parameter setting</b></span><hr /><br />
+
+                        <form action='javascript:submit();' method='post' class="form-horizontal">
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Match Content-Type</label>
+                                <div class="col-sm-4">
+                                    <input name='gzip' id='gzip' value='(text/css)|(text/ht*)|(javascript)' class="form-control" />
+                                </div>
+                                <div class="col-sm-4">
+                                    * Support regular expressions, if you are not familiar with the settings, the default is！
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label"></label>
+                                <div class="col-sm-4">
+                                    <input type='submit' value='Turn on Gzip Compression' class="btn btn-primary" />&nbsp;&nbsp;<input type="button" onclick="javascript:del();" value="Clear settings" class="btn btn-default" />
+                                </div>
+                            </div>
+                        </form>
+
+
+
+
+
+                    </div>
+
+
+
+                </div></div></div></div></div>
+<p><div class="label label-warning">Prompt Description</div> &nbsp; This feature compresses the server data and sends it to the viewer, which will help to increase the speed of your web page opening！</p>
+
