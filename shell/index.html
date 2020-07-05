@@ -1,0 +1,115 @@
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Backup</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+
+                    <br /><div class="col-md-12">
+                    <span style="font-size:16px;"><b>Website file backup</b></span><hr /><br />
+                    <form name='bakupweb' action="?c=shell&a=bakupweb" method="post" target='_blank'>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Set backup file password</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name='password' required="required" class="form-control">
+                                </div>
+                                <div class="col-sm-2">
+                                    * Backup files are stored in the backup directory                                 </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label"></label>
+                                <div class="col-sm-4">
+                                    <input type='submit' value='Backup' class="btn btn-primary" />                               </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                    {{if $user.db_quota>0 && $user.db_type!='sqlsrv'}}
+                    <br /><div class="col-md-12">
+                    <span style="font-size:16px;"><b>Database Backup</b></span><hr /><br />
+                    <form name='mysqlout' action="?c=shell&a=mysqldumpout" method="post" target='_blank'>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Your database password</label>
+                                <div class="col-sm-4">
+                                    <input type='password' name='passwd' required="required" class="form-control">
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label"></label>
+                                <div class="col-sm-4">
+                                    <input type='submit' value='Backup' class="btn btn-primary" />                               </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                    <br /><div class="col-md-12">
+                    <span style="font-size:16px;"><b>Remote database import</b></span><hr /><br />
+                    <form name='remotemysqldumpin' action="?c=shell&a=remotemysqldumpin" method="post" target='_blank'>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Remote database IP</label>
+                                <div class="col-sm-4">
+                                    <input type='text' name='rehost' id='rehost' size='16' required="required" class="form-control" />
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Remote database user name</label>
+                                <div class="col-sm-4">
+                                    <input type='text' name='reuser' id='reuser' size='16' required="required" class="form-control" />
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Remote database password</label>
+                                <div class="col-sm-4">
+                                    <input type='password' name='repasswd' id='repasswd' size='16' required="required" class="form-control" />
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Remote database name</label>
+                                <div class="col-sm-4">
+                                    <input type='text' name='redate' id='redate' size='16' required="required" class="form-control" />
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Local database password</label>
+                                <div class="col-sm-4">
+                                    <input type='password' name='passwd' id='passwd' size='16' required="required" class="form-control" />
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label"></label>
+                                <div class="col-sm-4">
+                                    <input type='submit' value='Import' class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                    {{/if}}
+
+
+                </div></div></div></div></div><br />
