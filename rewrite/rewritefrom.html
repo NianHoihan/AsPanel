@@ -1,0 +1,111 @@
+<script language='javascript' src='{{$STATIC}}js/rewrite.js'></script>
+<script language='javascript'></script>
+
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">URL Transfer</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                    <div style=" height:7px;"></div>
+                    <table class="table" cellpadding="0" cellspacing="">
+                        <thead class="thead-default">
+                        <tr>
+                            <th>Operating</th>
+                            <th>Sequence</th>
+                            <th>URL</th>
+                            <th>Transfer to domain</th>
+                            <th>Transfer code</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{foreach from=$res item=row}}
+                        <tr>
+                            <td><a href="javascript:rewrite_del('{{$row.id}}')">Delete</a></td>
+                            <td>{{$row.id}}</td>
+                            <td>{{$row.host}}</td>
+                            <td>{{$row.dst}}</td>
+                            <td>{{$row.code}}</td>
+                        </tr>
+                        {{/foreach}}
+                        </tbody>
+                    </table>
+
+
+
+                    <br /><br /><div class="col-md-12">
+                    <span style="font-size:16px;"><b>Function parameter setting</b></span><hr /><br />
+                    <form action='?c=rewrite&a=rewriteAdd' method='post' name='form'>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Function switch</label>
+                                <div class="col-sm-4">
+                                    {{if $at==0}}
+                                    <a href="?c=rewrite&a=rewriteCheckOn&status=1" title='Click Able function' class="btn btn-labeled btn-danger"><span class="btn-label"><i class="fa fa-times"></i>               </span>当前状态：关闭</a>
+                                    {{else}}
+                                    <a href="?c=rewrite&a=rewriteCheckOn&status=2" title='Click Disable function' class="btn btn-labeled btn-success"><span class="btn-label"><i class="fa fa-check"></i>               </span>当前状态：开启</a>
+                                    {{/if}}
+                                </div>
+                                <div class="col-sm-4">
+                                    * Click the status button to turn the current function on or off                                 </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Domain</label>
+                                <div class="col-sm-4">
+                                    <input name="host" size='20' id='host' class="form-control" />
+                                </div>
+                                <div class="col-sm-4">
+                                    * The domain address to be redirected                                 </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Transfer to domain</label>
+                                <div class="col-sm-4">
+                                    <input name='dst' size='20' id='dst' class="form-control" />
+                                </div>
+                                <div class="col-sm-4">
+                                        * The domain name address to Transfer to                                 </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Transfer Code</label>
+                                <div class="col-sm-4">
+                                    <input name='code' size='6' value='301' class="form-control" id='code' />
+                                </div>
+                                <div class="col-sm-4">
+                                    * 301,302  <a href='javascript:help();'><font color='red'>Help? Demo</font></a>                                 </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label"></label>
+                                <div class="col-sm-4">
+                                    <input type='button' value='Submit' onclick='rewrite_add();' class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+
+
+
+
+
+
+
+                </div>
+
+
+
+                </div></div></div></div></div>
+<script language='javascript'>
+    form.host.focus();
+</script>
