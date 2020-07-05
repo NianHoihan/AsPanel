@@ -1,0 +1,43 @@
+<div align="center">
+    <div class="wid_panel2">
+        <div id="xsnazzy">
+            <b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+            <div class="xboxcontent" align="center">
+                <div class="public_pa">
+                    <div class="start"><b>Add and remove programs</b></div>
+                    <div class="start2"><a href='?c=webapp&a=browse'><img src="{{$STATIC}}style/online2.gif" border="0" alt="Online installer" /></a></div>
+                </div>
+                <div class="public_pa_wid padding_bottom">
+                    <table class="table_public" cellpadding="0" cellspacing="1">
+                        <tr id="bg_yellow">
+                            <td>Operating</td>
+                            <td>Status</td>
+                            <td>Program</td>
+                            <td>Domain</td>
+                            <td>Directory</td>
+                            <td>Physical path</td>
+                            <td>Installation time</td>
+                        </tr>
+                        {{foreach from=$list item=row}}
+                        <tr>
+                            <td>[<a
+                                    href="javascript:if(confirm('Confirm delete{{$row.appname}} V{{$row.appver}}?')){location='?c=webapp&a=uninstall&id={{$row.id}}';}"
+                            >Delete</a>]</td>
+                            <td>
+                                {{if $row.status==0}}<a href='?c=webapp&a=install&step=1&appid={{$row.appid}}&appname={{$row.appname}}&appver={{$row.appver}}&id={{$row.id}}&domain={{$row.domain}}&dir={{$row.dir}}'>Incomplete, reinstall</a>{{else}}success{{/if}}</td>
+                            <td>{{$row.appname}} V{{$row.appver}}</td>
+                            <td>{{$row.domain}}</td>
+                            <td>{{$row.dir}}</td>
+                            <td>{{$row.phy_dir}}</td>
+                            <td>{{$row.install_time}}</td>
+                        </tr>
+                        {{/foreach}}
+                        <tr id="bg_yellow"><td colspan="7">Total {{$sum}} Records</td>	</tr>
+                    </table>
+                </div>
+            </div>
+            <b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+        </div>
+    </div>
+</div>
+
