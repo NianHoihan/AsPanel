@@ -1,0 +1,104 @@
+<script language='javascript' src='{{$STATIC}}js/speed.js'></script>
+<script language='javascript'></script>
+<div class='pro_msg' style="display: none" id='msg'></div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Bandwidth Rate limit</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                    <div style=" height:7px;"></div>
+                    <table class="table" cellpadding="0" cellspacing="0">
+                        <thead class="thead-default">
+                        <tr>
+                            <th>Operating</th>
+                            <th>Limit Mode</th>
+                            <th>Limit Bandwidth Rate</th>
+                            <th>Directory</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{foreach from=$sp item=row}}
+                        <tr>
+                            <td><a href="javascript:speed_del({{$row.id}})">Delete</a></td>
+                            <td>{{if $row.mode=='s'}}Limit per request{{elseif
+                                $row.mode=='i'}}Per IP limit{{else}}Grouping restrictions{{/if}}</td>
+                            <td>{{$row.limit/1024}}KB/second</td>
+                            <td>{{$row.path}}</td>
+                        </tr>
+                        {{/foreach}}
+                        </tbody>
+                    </table>
+                    <br /><br />
+                    <div class="col-md-12">
+                        <span style="font-size:16px;"><b>Function parameter setting</b></span><hr /><div style="height:6px;"></div>
+                        <form action='?c=speed&a=speedAdd' method='post' name='from'>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Function switch</label>
+                                <div class="col-sm-4">
+                                    {{if $at==0}}
+                                    <label class="switch">
+                                        <input type="checkbox" onclick="javascript:speed_checkon(1)" data-plugin="switchery" data-color="#64b0f2" data-size="small">
+                                        <span></span>                              </label>
+                                    {{else}}
+                                    <label class="switch">
+                                        <input type="checkbox" onclick="javascript:speed_checkon(2)" checked data-plugin="switchery" data-color="#64b0f2" data-size="small" >
+                                        <span></span>                              </label>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Restricted category</label>
+                                <div class="col-sm-4">
+                                    <select name='mode' id='mode' onchange='piao_msg(this.value);' class="form-control">
+                                        <option value="speed_limit">Limit per request</option>
+                                        <option value="ip_speed_limit">Per IP limit</option>
+                                        <option value='gspeed_limit'>Grouping restrictions</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    * Please select a category                                 </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Bandwidth Rate</label>
+                                <div class="col-sm-4">
+                                    <input name="limit" id='limit' class="form-control" placeholder="" />
+                                </div>
+                                <div class="col-sm-4">
+                                    * Example: 200, unit: KB/sec. Just fill in the numbers                            </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Directory</label>
+                                <div class="col-sm-4">
+                                    <input name='path' placeholder="" onfocus='check_onfocus_value(this.id)' onblur='check_onblur_value(this.id)' id='path' class="form-control" />
+                                </div>
+                                <div class="col-sm-4">
+                                    * Can be left blank                            </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label"></label>
+                                <div class="col-sm-4">
+                                    <input type='button' value='Add Rules' onclick='speed_add();' class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+
+                </div></div></div></div></div>
+
+
+
+<div id='script'></div>
+
+<script language='javascript'>
+    //document.getElementById("path").defaultValue='';
+    from.limit.focus();
+    document.from.path.style.color="#999999"
+</script>
